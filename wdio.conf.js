@@ -1,3 +1,22 @@
+const drivers = {
+    proxy: process.env.proxy,
+    baseURL: 'https://selenium-release.storage.googleapis.com',
+    version: '3.141.59',
+    ignoreExtraDrivers: true,
+    drivers: {
+      chrome: {
+        version: '86.0.4240.22',
+        arch: process.arch,
+        baseURL: 'https://chromedriver.storage.googleapis.com'
+      },
+      firefox: {
+        version: '2.0.1',
+        arch: process.arch,
+        baseURL: 'https://github.com/mozilla/geckodriver/releases/download'
+      }
+    }
+  };
+
 exports.config = {
     //
     // ====================
@@ -69,6 +88,15 @@ exports.config = {
         //maxInstances: 5,
         //
         browserName: 'chrome',
+        'goog:chromeOptions': {
+            args: [
+                '--no-sandbox',
+                '--disable-infobars',
+                '--headless',
+                '--disable-gpu',
+                '--window-size=1440,735'
+            ],
+        },
     }, 
     {
         maxInstances: 5,
@@ -127,7 +155,12 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['selenium-standalone'],
+    services: [
+        ['selenium-standalone', {
+            logPath: 'logs',
+            installArgs: { drivers }, // drivers to install
+            args: { drivers } // drivers to use
+        }]],
     
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
