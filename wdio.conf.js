@@ -26,6 +26,14 @@ exports.config = {
     specs: [
         './test/**/*.js'
     ],
+    suites: {
+        automatedTestsuite: [
+            './test/checkText.js',
+        ],
+        otherTestsuite: [
+            // ...
+        ]
+    },
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
