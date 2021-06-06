@@ -7,32 +7,42 @@ help:
 		@echo ""
 	    @echo "Makefile commands:"
 		@echo ""
-	    @echo "build" - Builds Docker Image
-	    @echo "run" - Runs Docker Container
-	    @echo "all" - Creates Docker image and Runs Container
+	    @echo "up" - Builds all Docker Images
+	    @echo "run" - Runs all Docker Containers
+	    @echo "all" - Creates all Docker images and Runs all Container
 		@echo "rmi" - Removes all unused images
 		@echo "rm" - Removes all failed docker containers
+		@echo "clean" - cleans all docker images
+		@echo "down" - stopping all docker containers
 		@echo ""
 
-.PHONY: build run rmi rm all help
+.PHONY: up run rmi rm all clean help
 
 .DEFAULT_GOAL := all
 
 #Goal for docker build
-build:
-	@docker build -t ${IMAGE} -f Dockerfile .
+up:
+	@docker-compose up
 
 #Goal for docker run
 run:
-	@docker run -p ${PORT} -it ${IMAGE}:${VERSION}
+	@npm test
+
+#Goal for stopping all docker containers
+down:
+	@docker-compose down
 
 #Goal for removing unused docker images
 rmi:
 	@docker system prune
+
+#Goal for cleaning all images
+clean:
+	@docker image prune -a
 
 #Goal for removing failed docker containers
 rm:
 	@docker container prune
 
 #Goal for building an image and running the container
-all: build run
+all: up

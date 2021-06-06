@@ -1,22 +1,3 @@
-const drivers = {
-    proxy: process.env.proxy,
-    baseURL: 'https://selenium-release.storage.googleapis.com',
-    version: '3.141.59',
-    ignoreExtraDrivers: true,
-    drivers: {
-      chrome: {
-        version: '86.0.4240.22',
-        arch: process.arch,
-        baseURL: 'https://chromedriver.storage.googleapis.com'
-      },
-      firefox: {
-        version: '2.0.1',
-        arch: process.arch,
-        baseURL: 'https://github.com/mozilla/geckodriver/releases/download'
-      }
-    }
-  };
-
 exports.config = {
     //
     // ====================
@@ -45,14 +26,6 @@ exports.config = {
     specs: [
         './test/**/*.js'
     ],
-    suites: {
-        automatedTestsuite: [
-            './test/checkText.js',
-        ],
-        otherTestsuite: [
-            // ...
-        ]
-    },
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -79,35 +52,32 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://docs.saucelabs.com/reference/platforms-configurator
     //
-    capabilities: [
-    {
-        maxInstances: 5,
+    capabilities: [{
+    
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        //maxInstances: 5,
+        maxInstances: 5,
         //
         browserName: 'chrome',
-        'goog:chromeOptions': {
-            args: [
-                '--no-sandbox',
-                '--disable-infobars',
-                '--headless',
-                '--disable-gpu',
-                '--window-size=1440,735'
-            ],
-        },
-    }, 
-    {
-        maxInstances: 5,
-        browserName: 'firefox',
-        //acceptInsecureCerts: true
+        acceptInsecureCerts: true
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
         // excludeDriverLogs: ['bugreport', 'server'],
-        },
-    ],
+    },{
+    
+        // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+        // grid with only 5 firefox instances available you can make sure that not more than
+        // 5 instances get started at a time.
+        maxInstances: 5,
+        //
+        browserName: 'firefox',
+        // If outputDir is provided WebdriverIO can capture driver session logs
+        // it is possible to configure which logTypes to include/exclude.
+        // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
+        // excludeDriverLogs: ['bugreport', 'server'],
+    }],
     //
     // ===================
     // Test Configurations
@@ -139,7 +109,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'https://www.volvocars.com/intl/v/car-safety/a-million-more',
+    baseUrl: 'http://localhost',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -155,12 +125,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: [
-        ['selenium-standalone', {
-            logPath: 'logs',
-            installArgs: { drivers }, // drivers to install
-            args: { drivers } // drivers to use
-        }]],
+    services: ['docker'],
     
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
