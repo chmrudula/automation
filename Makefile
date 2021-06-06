@@ -26,10 +26,13 @@ build:
 run:
 	@docker run -p ${PORT} -it ${IMAGE}:${VERSION}
 
+#Goal for removing unused docker images
 rmi:
 	@docker system prune
 
+#Goal for removing failed docker containers
 rm:
 	@docker container prune
 
+#Goal for building an image and running the container
 all: build run
